@@ -34,3 +34,48 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+
+<!-- 
+'use client';
+
+import { useAuth } from 'react-oidc-context';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function HomePage() {
+  const auth = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      // Redirect after successful login
+      router.push('/room/testroom'); // or dynamically assign room id
+    }
+  }, [auth.isAuthenticated]);
+
+  if (auth.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (auth.error) {
+    return <div>Error: {auth.error.message}</div>;
+  }
+
+  if (auth.isAuthenticated) {
+    return (
+      <div>
+        <h2>Welcome, {auth.user?.profile.email}</h2>
+        <button onClick={() => auth.removeUser()}>Sign out</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button onClick={() => auth.signinRedirect()}>Sign in</button>
+    </div>
+  );
+} -->

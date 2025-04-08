@@ -1,103 +1,160 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useEffect } from "react"
+import { useAuth } from "react-oidc-context"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Loader2, AlertCircle, Code, Lock, Users } from "lucide-react"
+
+export default function HomePage() {
+  const auth = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      router.push("/dashboard")
+    }
+  }, [auth.isAuthenticated])
+
+  if (auth.isLoading) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900">
+        <Loader2 className="h-6 w-6 text-slate-600 dark:text-slate-400 animate-spin mb-2" />
+        <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">Initializing application</p>
+      </div>
+    )
+  }
+
+  if (auth.error) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900 px-4">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-red-200 dark:border-red-900/30 p-4 max-w-md w-full shadow-sm">
+          <div className="flex items-start space-x-3">
+            <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="text-sm font-medium text-slate-900 dark:text-slate-200">Authentication Error</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{auth.error.message}</p>
+              <Button variant="outline" size="sm" onClick={() => window.location.reload()} className="mt-3">
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col">
+      {/* Header */}
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Code className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+            <h1 className="text-lg font-medium text-slate-800 dark:text-slate-200">Collab Code Editor</h1>
+          </div>
+        </div>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Main content */}
+      <main className="flex-1 flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full mx-auto grid md:grid-cols-2 gap-8 items-center">
+          {/* Left column - Info */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-2">
+                Collaborative Coding Environment
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400">
+                A secure, real-time code editor for teams to collaborate efficiently on projects.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="bg-slate-200 dark:bg-slate-700 p-2 rounded-md">
+                  <Users className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-200">Real-time Collaboration</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Work together with your team in real-time, seeing changes as they happen.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3">
+                <div className="bg-slate-200 dark:bg-slate-700 p-2 rounded-md">
+                  <Lock className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-200">Secure Authentication</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Powered by AWS Cognito for enterprise-grade security and user management.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right column - Login */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-700 mb-2">
+                <Code className="h-6 w-6 text-slate-700 dark:text-slate-300" />
+              </div>
+
+              <h2 className="text-xl font-medium text-slate-900 dark:text-slate-200">Sign in to get started</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Access your collaborative coding workspace securely with AWS Cognito authentication.
+              </p>
+
+              <Button
+                onClick={() => auth.signinRedirect()}
+                className="w-full bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 mt-2"
+              >
+                Sign in with Cognito
+              </Button>
+
+              <p className="text-xs text-slate-500 dark:text-slate-400 pt-4">
+                By signing in, you agree to our Terms of Service and Privacy Policy.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-4">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              © {new Date().getFullYear()} Collab Code Editor. All rights reserved.
+            </p>
+            <div className="flex space-x-4 mt-2 md:mt-0">
+              <a
+                href="#"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+              >
+                Terms
+              </a>
+              <a
+                href="#"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+              >
+                Privacy
+              </a>
+              <a
+                href="#"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+              >
+                Help
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
+
