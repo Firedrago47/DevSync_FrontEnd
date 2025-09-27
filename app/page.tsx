@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect,useState } from "react"
 import { useAuth } from "react-oidc-context"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,14 @@ import { Loader2, AlertCircle, Code, Lock, Users } from "lucide-react"
 export default function HomePage() {
   const auth = useAuth()
   const router = useRouter()
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  const handleRedirect = () => {
+    setIsRedirecting(true);
+  setTimeout(() => {
+    router.push("/dashboard");
+  }, 2000); // Customize your delay
+};
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -16,7 +24,7 @@ export default function HomePage() {
     }
   }, [auth.isAuthenticated])
 
-  if (auth.isLoading) {
+  if (auth.isLoading || isRedirecting) {
     return (
       <div className="h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900">
         <Loader2 className="h-6 w-6 text-slate-600 dark:text-slate-400 animate-spin mb-2" />
@@ -110,7 +118,8 @@ export default function HomePage() {
               </p>
 
               <Button
-                onClick={() => auth.signinRedirect()}
+                // onClick={() => auth.signinRedirect()}
+                onClick={handleRedirect}
                 className="w-full bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 mt-2"
               >
                 Sign in with Cognito

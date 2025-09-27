@@ -13,12 +13,25 @@ export default function DashboardPage() {
   const auth = useAuth()
   const router = useRouter()
   const [roomIdInput, setRoomIdInput] = useState("")
+  const fakeEmail = "developer@devsync.local"
+const userEmail =
+  process.env.NODE_ENV === "development" || !auth.isAuthenticated
+    ? fakeEmail
+    : auth.user?.profile.email
 
   useEffect(() => {
+  // Skip auth redirect in development
+  if (process.env.NODE_ENV !== "development") {
     if (!auth.isLoading && !auth.isAuthenticated) {
       router.push("/")
     }
-  }, [auth.isAuthenticated, auth.isLoading])
+  }
+}, [auth.isAuthenticated, auth.isLoading])
+  // useEffect(() => {
+  //   if (!auth.isLoading && !auth.isAuthenticated) {
+  //     router.push("/")
+  //   }
+  // }, [auth.isAuthenticated, auth.isLoading])
 
   if (auth.isLoading) {
     return (
@@ -29,16 +42,16 @@ export default function DashboardPage() {
     )
   }
 
-  if (!auth.isAuthenticated) return null
+  // if (!auth.isAuthenticated) return null
 
   const handleCreateRoom = () => {
     const newRoomId = uuidv4()
-    router.push(`/room/${newRoomId}`)
+    router.push(`/project/${newRoomId}`)
   }
 
   const handleJoinRoom = () => {
     if (roomIdInput.trim()) {
-      router.push(`/room/${roomIdInput.trim()}`)
+      router.push(`/project/${roomIdInput.trim()}`)
     }
   }
 
@@ -71,30 +84,30 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
             <div className="p-5">
-              <h2 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">Room Management</h2>
+              <h2 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">Project Room Management</h2>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                Create a new room or join an existing one
+                Create a new project room or join an existing one
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Create Room Section */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Create New Room</h3>
+                    <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Create New Project Room</h3>
                     <span className="text-xs text-slate-500 dark:text-slate-400">Generates unique ID</span>
                   </div>
                   <Button
                     onClick={handleCreateRoom}
                     className="w-full bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 h-9"
                   >
-                    <Plus className="mr-2 h-4 w-4" /> Create Room
+                    <Plus className="mr-2 h-4 w-4" /> Create Project Room
                   </Button>
                 </div>
 
                 {/* Join Room Section */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Join Existing Room</h3>
+                    <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Join Existing Project Room</h3>
                     <span className="text-xs text-slate-500 dark:text-slate-400">Enter room ID</span>
                   </div>
                   <div className="flex space-x-2">
@@ -132,18 +145,18 @@ export default function DashboardPage() {
           {/* Recent Rooms (Additional content to fill space professionally) */}
           <div className="mt-6 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
             <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-              <h2 className="text-sm font-medium text-slate-800 dark:text-slate-200">Recent Rooms</h2>
+              <h2 className="text-sm font-medium text-slate-800 dark:text-slate-200">Recent Project Rooms</h2>
             </div>
             <div className="p-0">
               <div className="divide-y divide-slate-200 dark:divide-slate-700">
                 {[1, 2, 3].map((i) => (
                   <button
                     key={i}
-                    onClick={() => router.push(`/room/example-${i}`)}
+                    onClick={() => router.push(`/project/example-${i}`)}
                     className="w-full flex items-center justify-between p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-left"
                   >
                     <div>
-                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Room #{i}</p>
+                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Project Room #{i}</p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
                         Last accessed {i} day{i !== 1 ? "s" : ""} ago
                       </p>
