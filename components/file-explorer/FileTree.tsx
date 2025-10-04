@@ -28,26 +28,22 @@ const FileTree: React.FC = () => {
     setTree(getFilesFromStorage());
   }, []);
 
-  // calculate parent folders of active node
-useEffect(() => {
-  if (!activeNode) return;
+    // calculate parent folders of active node
+    useEffect(() => {
+      if (!activeNode) return;
 
-  const parents = new Set<string>();
-  let current: FileNodeType | undefined = tree.find(n => n.id === activeNode);
+      const parents = new Set<string>();
+      let current: FileNodeType | undefined = tree.find(n => n.id === activeNode);
 
-  while (current?.parentId) {
-    parents.add(current.parentId);
+      while (current?.parentId) {
+        parents.add(current.parentId);
 
-    // safe find, optional chaining ensures no error
-    current = tree.find(n => n.id === current?.parentId);
-  }
+        // safe find, optional chaining ensures no error
+        current = tree.find(n => n.id === current?.parentId);
+      }
 
-  setActiveParents(parents);
-}, [activeNode, tree]);
-
-
-
-
+      setActiveParents(parents);
+    }, [activeNode, tree]);
 
   const updateTree = (updated: FileNodeType[]) => {
     setTree(updated);

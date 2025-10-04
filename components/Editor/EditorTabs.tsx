@@ -34,9 +34,9 @@ const Tab = ({ name, isActive, onActivate, onClose }: TabProps) => (
   <div
     onClick={onActivate}
     title={name}
-    className={`flex items-center px-3 py-1 rounded-t-md mr-2 cursor-pointer ${
+    className={`flex text-sm items-center px-3 py-1 rounded mr-2 cursor-pointer ${
       isActive
-        ? 'bg-zinc-900 text-white border-t border-x border-zinc-600'
+        ? 'bg-zinc-900 text-white border border-zinc-600'
         : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
     }`}
   >
