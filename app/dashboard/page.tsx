@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const [roomIdInput, setRoomIdInput] = useState("")
   const fakeEmail = "developer@devsync.local"
-const userEmail =
+  const userEmail =
   process.env.NODE_ENV === "development" || !auth.isAuthenticated
     ? fakeEmail
     : auth.user?.profile.email
@@ -42,7 +42,7 @@ const userEmail =
     )
   }
 
-  // if (!auth.isAuthenticated) return null
+  if (!auth.isAuthenticated) return null
 
   const handleCreateRoom = () => {
     const newRoomId = uuidv4()

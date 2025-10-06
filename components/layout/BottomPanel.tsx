@@ -7,9 +7,10 @@ import Output from '../terminal/output';
 type BottomPanelProps = {
   isVisible: boolean;
   onResize?: (height: number) => void;
+  logs: string[];
 };
 
-const BottomPanel: React.FC<BottomPanelProps> = ({ isVisible, onResize }) => {
+const BottomPanel: React.FC<BottomPanelProps> = ({ isVisible, onResize,logs }) => {
   const [activeTab, setActiveTab] = useState<'output' | 'terminal'>('output');
   const panelRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
@@ -63,7 +64,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ isVisible, onResize }) => {
 
       {/* Content Area */}
       <div className="flex-1 overflow-auto">
-        {activeTab === 'output' ? <Output /> : <Terminal />}
+        {activeTab === 'output' ? <Output logs={logs}/> : <Terminal />}
       </div>
     </div>
   );

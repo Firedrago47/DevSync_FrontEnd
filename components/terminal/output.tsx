@@ -2,13 +2,19 @@
 
 import React from 'react';
 
-const Output: React.FC = () => {
+type OutputProps = {
+  logs: string[]; // receive logs from parent
+};
+
+const Output: React.FC<OutputProps> = ({ logs }) => {
   return (
     <div className="bg-[#1E1E1E] text-gray-300 font-mono text-[13px] h-full px-5 py-4 overflow-y-auto leading-relaxed">
-      <div className="text-gray-400 mb-2">[Running] main.py</div>
-      <div>Hello, world!</div>
-      <div>Code executed successfully.</div>
-      <div className="text-gray-500 mt-3">[Done] exited with code=0 in 1.2s</div>
+      {logs.length === 0 && (
+        <div className="text-gray-400">[Running] Waiting for code output...</div>
+      )}
+      {logs.map((line, idx) => (
+        <div key={idx}>{line}</div>
+      ))}
     </div>
   );
 };

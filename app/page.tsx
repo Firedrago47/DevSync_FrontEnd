@@ -15,7 +15,7 @@ export default function HomePage() {
     setIsRedirecting(true);
   setTimeout(() => {
     router.push("/dashboard");
-  }, 2000); // Customize your delay
+  }, 2000); 
 };
 
   useEffect(() => {
@@ -118,8 +118,8 @@ export default function HomePage() {
               </p>
 
               <Button
-                // onClick={() => auth.signinRedirect()}
-                onClick={handleRedirect}
+                onClick={() => auth.signinRedirect()}
+                // onClick={handleRedirect}
                 className="w-full bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 mt-2"
               >
                 Sign in with Cognito

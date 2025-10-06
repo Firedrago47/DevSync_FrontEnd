@@ -2,24 +2,25 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
-import { Menu, ClipboardCopy, ChevronDown } from 'lucide-react';
-import { toast } from 'sonner'; // assumes you're using "sonner" or you can swap with any toast lib
+import { Menu, ClipboardCopy, ChevronDown, Play } from 'lucide-react';
+import { toast } from 'sonner';
 
 type HeaderProps = {
   roomId: string;
   title?: string;
   onToggleSidebar: () => void;
   onToggleBottomPanel: () => void;
+  onRunCode?: () => void; // 👈 new optional prop
 };
 
 const Header: React.FC<HeaderProps> = ({
   title,
   onToggleSidebar,
   onToggleBottomPanel,
+  onRunCode,
 }) => {
   const params = useParams();
   const roomId = params?.roomId as string;
-
   const displayTitle = title ?? 'Untitled Project';
 
   const handleCopyRoomId = () => {
@@ -46,17 +47,29 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      {/* Right: Copy + Toggle Bottom Panel */}
+      {/* Right: Copy + Run + Bottom Panel */}
       <div className="flex items-center gap-3">
         {roomId && (
-          <button
-            onClick={handleCopyRoomId}
-            className="text-xs px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-zinc-200 transition"
-          >
-            <ClipboardCopy size={14} className="inline mr-1" />
-            Copy ID
-          </button>
+          <>
+            <button
+              onClick={handleCopyRoomId}
+              className="text-xs px-2 py-1 bg-zinc-800 hover:bg-zinc-700 rounded text-zinc-200 transition"
+            >
+              <ClipboardCopy size={14} className="inline mr-1" />
+              Copy ID
+            </button>
+
+            {/* 👇 New Run Button */}
+            <button
+              onClick={onRunCode}
+              className="text-xs px-2 py-1 bg-green-600 hover:bg-green-500 rounded text-white flex items-center transition"
+            >
+              <Play size={14} className="inline mr-1" />
+              Run
+            </button>
+          </>
         )}
+
         <button onClick={onToggleBottomPanel} className="hover:text-zinc-300 transition">
           <ChevronDown size={20} />
         </button>

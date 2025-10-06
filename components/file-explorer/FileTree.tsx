@@ -181,8 +181,8 @@ const FileTree: React.FC = () => {
       <div className="flex justify-between items-center px-2 py-1 mb-2 border rounded border-[#333]">
         <span className="font-semibold text-gray-300">Project</span>
         <div className="flex gap-2">
-          <Plus size={16} className="cursor-pointer text-green-400 hover:text-green-300" onClick={() => createNode('file')} />
-          <Folder size={16} className="cursor-pointer text-yellow-400 hover:text-yellow-300" onClick={() => createNode('folder')} />
+          <Plus size={16} className="cursor-pointer hover:text-green-300" onClick={() => createNode('file')} />
+          <Folder size={16} className="cursor-pointer hover:text-yellow-300" onClick={() => createNode('folder')} />
         </div>
       </div>
       <div className="px-1 overflow-y-auto h-full">{renderNodes()}</div>
