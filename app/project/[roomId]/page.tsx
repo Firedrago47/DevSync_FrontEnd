@@ -5,6 +5,7 @@ type Props = {
   params: { roomId: string };
 };
 
-export default function ProjectPage({ params }: Props) {
-  return <Layout roomId={params.roomId} />;
+export default async function ProjectPage({ params }: Props) {
+    const resolvedParams = await params;
+    return <Layout roomId={resolvedParams.roomId} />;
 }
